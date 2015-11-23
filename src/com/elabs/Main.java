@@ -9,29 +9,36 @@ public class Main {
 
 class SomeClass1 {
 
-    InterfaceIntVar mIv;
+    static InterfaceIntVar mIv;
+    static SomeClass1 mSc1;
 
-    public SomeClass1 (InterfaceIntVar iv){
+    public static SomeClass1 getInstance(InterfaceIntVar iv)
+    {
 
-        mIv = iv;
-
+        mSc1 = new SomeClass1(iv);
+        return mSc1;
     }
 
-    public void doWork() {
+    public SomeClass1 (InterfaceIntVar iv) {
 
-        mIv.printSomeVar();
+        mIv = iv;
+    }
+
+    public void doWork() { // this gets executed, which in turn calls SomeClass2's someCallback method
+
+        mIv.someCallback();
 
     }
 
 }
 
-class SomeClass2 implements InterfaceIntVar{
+class SomeClass2 implements InterfaceIntVar{ //Users Class
 
     private SomeClass1 sc1;
 
     public SomeClass2() {
 
-        sc1 = new SomeClass1(this);
+        sc1 = SomeClass1.getInstance(this); // register current object in SomeClass1 object
     }
 
     @Override
